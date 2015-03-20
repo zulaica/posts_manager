@@ -1,0 +1,41 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+nav + section {
+  margin-top: 1rem;
+}
+
+dt:not(first-of-type) {
+  margin-top: 1rem;
+}
+
+dt a {
+  display: block;
+}
+
+time {
+  display: block;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.alert h3 {
+  margin-top: 0;
+}
+
+aside ul {
+  margin-top: 2rem;
+}
+
+footer {
+  background: #fff;
+  height: 4rem;
+  position: fixed;
+  bottom: 0;
+  border-top: 1px solid #ddd;
+  padding-top: 1rem;
+  width: 100%;
+}
+  footer p:first-of-type {
+    text-align: right;
+  }

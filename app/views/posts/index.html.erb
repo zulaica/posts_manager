@@ -1,0 +1,10 @@
+<section class="col-md-9 col-md-offset-1">
+  <h2>Posts</h2>
+
+  <dl>
+    <% @posts.each do |post| %>
+      <dt><%= link_to post.title, post_path(post) %></dt>
+      <dd><time datetime="<%= post.published.strftime('%Y-%m-%dT%H:%M%z') %>"><%= post.published.strftime("Published on %B %d, %Y at %I:%M%P \(%Z\)") %></time></dd>
+    <% end %>
+  </dl>
+</section>

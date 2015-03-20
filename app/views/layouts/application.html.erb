@@ -8,7 +8,43 @@
 </head>
 <body>
 
-<%= yield %>
+  <header class="jumbotron">
+    <h1 class="container">Super Secret Diarytron 9000<sup>&reg;</sup></h1>
+  </header>
+
+  <nav role="navigation" class="container">
+    <ul class="nav nav-pills nav-justified">
+        <li role="presentation">
+          <%= link_to posts_path do %>
+            <span class="glyphicon glyphicon-list"></span> List all blog posts
+          <% end %>
+        </li>
+        <li role="presentation">
+          <%= link_to new_post_path do %>
+          <span class="glyphicon glyphicon-plus"></span> Create a new blog post
+          <% end %>
+        </li>
+    </ul>
+  </nav>
+
+  <section class="container">
+    <% flash.each do |name, msg| %>
+    <% if msg.is_a?(String) %>
+    <div data-alert class="alert alert-<%= name.to_s == 'notice' ? 'success' : 'danger' %>" role="alert"><%= msg %></div>
+    <% end %>
+    <% end %>
+  </section>
+
+  <main class="container">
+    <%= yield %>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p class="col-md-3 col-md-offset-3"><a href="//zulaica.info" target="_blank">▶︎▲▼⬆︎▶︎</a> made this.</p>
+      <p class="col-md-3">Source available on <a href="//github.com/zulaica/rails_blog_app" target="_blank">GitHub</a>.</p>
+    </div>
+  </footer>
 
 </body>
 </html>
