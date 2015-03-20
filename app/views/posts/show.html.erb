@@ -1,4 +1,4 @@
-<article class="col-md-8 col-md-offset-1">
+<article class="col-md-8">
   <header>
     <h1><%= @post.title %></h1>
     <time datetime="<%= @post.published.strftime('%Y-%m-%dT%H:%M%z') %>"><%= @post.published.strftime("Published on %B %d, %Y at %I:%M%P \(%Z\)") %></time>
@@ -7,9 +7,10 @@
     <p><%= h(@post.entry).gsub(/\n/, "</p><p>").html_safe %></p>
   </section>
 </article>
-<aside class="col-md-2">
-  <ul>
-    <li><%= link_to "Edit this post", edit_post_path(@post) %></li>
-    <li><%= link_to "Delete this post", post_path(@post), :data => { :confirm => "Are you sure? This can't be undone.", :method => "delete" } %></li>
+<aside class="col-md-4">
+  <h1>Manage this post</h1>
+  <ul class="list-unstyled">
+    <li><%= link_to "Edit this post", edit_post_path(@post), :class => "btn btn-default" %></li>
+    <li><%= link_to "Delete this post", post_path(@post), :data => { :confirm => "Are you sure? This can't be undone.", :method => "delete" }, :class => "btn btn-danger" %></li>
   </ul>
 </aside>

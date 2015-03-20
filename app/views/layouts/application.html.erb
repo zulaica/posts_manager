@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>BloggingApp</title>
+  <link href="//fonts.googleapis.com/css?family=Oswald:400,700|Lato:900" rel="stylesheet" />
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -12,7 +13,7 @@
     <h1 class="container">Super Secret Diarytron 9000<sup>&reg;</sup></h1>
   </header>
 
-  <nav role="navigation" class="container">
+  <nav role="navigation" class="container well well-sm">
     <ul class="nav nav-pills nav-justified">
         <li role="presentation">
           <%= link_to posts_path do %>
