@@ -3,10 +3,28 @@
     <h1><%= @post.title %></h1>
     <time datetime="<%= @post.published.strftime('%Y-%m-%dT%H:%M%z') %>"><%= @post.published.strftime("Published on %B %d, %Y at %I:%M%P \(%Z\)") %></time>
   </header>
+
   <section>
     <p><%= h(@post.entry).gsub(/\n/, "</p><p>").html_safe %></p>
   </section>
+
+  <section>
+    <h2>Comments</h2>
+    <% if @post.comments.any? %>
+      <dl>
+        <% @post.comments.each do |comment| %>
+        <dt><%= comment.author %></dt>
+        <dd><%= comment.text %></dd>
+        <dd><time datetime="<%= comment.published.strftime('%Y-%m-%dT%H:%M%z') %>"><%= comment.published.strftime("Published on %B %d, %Y at %I:%M%P \(%Z\)") %></time></dd>
+        <% end %>
+      </dl>
+      <% else %>
+        <p>There are no comments yet!</p>
+      <% end %>
+      <%= link_to "Add a comment", new_post_comment_path(@post) %>
+  </section>
 </article>
+
 <aside class="col-md-4">
   <h1>Manage this post</h1>
   <ul class="list-unstyled">

@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 describe "the create new post process" do
   it "creates a new post" do

@@ -1,0 +1,22 @@
+<%= render "layouts/errors", :object => @post %>
+
+<%= form_for [@post, @comment], :html => { :class => "form-horizontal" } do |f| %>
+<div class="form-group">
+  <%= f.label :author, :class => "col-md-2 control-label" %>
+  <div class="col-md-10">
+    <%= f.text_field :author, :class => "form-control" %>
+  </div>
+</div>
+<div class="form-group">
+  <%= f.label :text, :class => "col-md-2 control-label" %>
+  <div class="col-md-10">
+    <%= f.text_area :text, :class => "form-control" %>
+  </div>
+</div>
+<div class="form-group">
+  <div class="col-md-10 col-md-offset-2">
+    <%= f.submit :class => "btn btn-success" %>
+    <%= link_to "Cancel", :back, :class => "btn btn-warning" %>
+  </div>
+</div>
+<% end %>
