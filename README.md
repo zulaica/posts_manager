@@ -12,7 +12,7 @@ Posts Manager is a simple web application that allows a user to manage post entr
 1. Enjoy!
 
 ```
-$ git clone https://github.com/zulaica/rails_blog_app.git
+$ git clone https://github.com/zulaica/posts_manager.git
 $ cd rails_blog_app
 $ bundle
 $ postgres
