@@ -1,21 +1,18 @@
 class PostsController < ApplicationController
   def index
     @posts = Post.all
-    render :index
   end
 
   def show
     @post = Post.find(params[:id])
-    render :show
   end
 
   def new
     @post = Post.new
-    render :new
   end
 
   def create
-    @post = Post.new(post_params)
+    @post = current_user.posts.new(post_params)
     @post.published = Time.now
     if @post.save
       flash[:notice] = "Your post was successfully created."

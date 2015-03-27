@@ -14,28 +14,27 @@
 
     <nav role="navigation" class="container well well-sm">
       <ul class="nav nav-pills nav-justified">
+        <% if current_user %>
+        <li role="presentation"><%= link_to "Account", user_path(current_user) %></li>
+        <li role="presentation"><%= link_to "Log Out", log_out_path %></li>
+        <% else %>
+        <li role="presentation"><%= link_to "Sign up", new_user_path %></li>
+        <li role="presentation"><%= link_to "Log In", log_in_path %></li>
+        <% end %>
         <li role="presentation">
           <%= link_to posts_path do %>
             <span class="glyphicon glyphicon-list"></span> List all blog posts
           <% end %>
         </li>
+        <% if current_user %>
         <li role="presentation">
           <%= link_to new_post_path do %>
             <span class="glyphicon glyphicon-plus"></span> Create a new blog post
           <% end %>
         </li>
+        <% end %>
       </ul>
     </nav>
-
-    <ul class="nav navbar-nav">
-      <% if current_user %>
-      <li><%= link_to "Account", user_path(current_user) %></li>
-      <li><%= link_to "Log Out", log_out_path %></li>
-      <% else %>
-      <li><%= link_to "Sign up", new_user_path %></li>
-      <li><%= link_to "Log In", log_in_path %></li>
-      <% end %>
-    </ul>
 
     <section class="container">
       <% flash.each do |name, msg| %>
