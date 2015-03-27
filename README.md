@@ -1,5 +1,5 @@
 # Posts Manager
-Posts Manager is a simple web application that allows a user to manage post entries (blog, updates, etc.). It is built with Ruby on Rails, which you will need in order to install.
+Posts Manager is a simple web application that allows a user to manage post entries (blog, updates, etc.). It is built with Ruby on Rails, which you will need in order to install. See it in action on Heroku.
 
 ## Installation
 1. Clone this repository.
@@ -22,6 +22,8 @@ $ rails server
 
 ## To Do
 - Finish commenting system.
+- Create user types.
+- Needs stronger user session authentication.
 
 ## Credits
 Posts Manager is written and maintained by [David Zulaica](http://zulaica.info).

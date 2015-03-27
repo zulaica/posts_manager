@@ -1,5 +1,11 @@
-<section class="col-md-12">
-  <h1>Edit your account</h1>
+<% if current_user %>
+  <section class="col-md-12">
+    <h1>Edit your account</h1>
 
-  <%= render "form" %>
-</section>
+    <%= render "form" %>
+  </section>
+<% else %>
+  <section>
+    <h1>You must be logged in to edit your account.</h1>
+  </section>
+<% end %>
