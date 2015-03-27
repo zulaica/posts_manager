@@ -3888,3 +3888,1076 @@ Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.2ms)
   [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
   [1m[35m (0.1ms)[0m  BEGIN
   [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[36m (107.0ms)[0m  [1mDROP DATABASE IF EXISTS "blogging-app_test"[0m
+  [1m[35m (238.0ms)[0m  CREATE DATABASE "blogging-app_test" ENCODING = 'unicode'
+  [1m[36mSQL (0.2ms)[0m  [1mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  [1m[35m (8.5ms)[0m  CREATE TABLE "comments" ("id" serial primary key, "author" character varying, "text" character varying, "published" timestamp, "created_at" timestamp, "updated_at" timestamp, "post_id" integer) 
+  [1m[36m (2.5ms)[0m  [1mCREATE TABLE "posts" ("id" serial primary key, "title" character varying, "entry" character varying, "published" timestamp, "created_at" timestamp, "updated_at" timestamp) [0m
+  [1m[35m (1.6ms)[0m  CREATE TABLE "schema_migrations" ("version" character varying NOT NULL) 
+  [1m[36m (1.0ms)[0m  [1mCREATE UNIQUE INDEX  "unique_schema_migrations" ON "schema_migrations"  ("version")[0m
+  [1m[35m (0.3ms)[0m  SELECT version FROM "schema_migrations"
+  [1m[36m (0.5ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20150320225358')[0m
+  [1m[35m (0.4ms)[0m  INSERT INTO "schema_migrations" (version) VALUES ('20150320165350')
+  [1m[36m (0.4ms)[0m  [1mINSERT INTO "schema_migrations" (version) VALUES ('20150320225052')[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:35:39.555132"], ["created_at", "2015-03-27 17:35:39.561914"], ["updated_at", "2015-03-27 17:35:39.561914"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started GET "/posts/1" for 127.0.0.1 at 2015-03-27 10:35:39 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 1]]
+  [1m[36mComment Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1[0m  [["post_id", 1]]
+  Rendered posts/show.html.erb within layouts/application (31.4ms)
+Completed 200 OK in 3683ms (Views: 3670.9ms | ActiveRecord: 0.9ms)
+Started GET "/posts/1/comments/new" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by CommentsController#new as HTML
+  Parameters: {"post_id"=>"1"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 1]]
+  Rendered layouts/_errors.html.erb (0.3ms)
+  Rendered comments/_form.html.erb (44.5ms)
+  Rendered comments/new.html.erb within layouts/application (47.6ms)
+Completed 200 OK in 58ms (Views: 49.7ms | ActiveRecord: 0.6ms)
+Started POST "/posts/1/comments" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "comment"=>{"author"=>"Person's Name", "text"=>"Comment text."}, "commit"=>"Create Comment", "post_id"=>"1"}
+  [1m[36mPost Load (0.2ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO "comments" ("author", "text", "post_id", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["author", "Person's Name"], ["text", "Comment text."], ["post_id", 1], ["published", "2015-03-27 17:35:43.351859"], ["created_at", "2015-03-27 17:35:43.352280"], ["updated_at", "2015-03-27 17:35:43.352280"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts/1
+Completed 302 Found in 4ms (ActiveRecord: 0.8ms)
+Started GET "/posts/1" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mPost Load (0.2ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 1]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 1]]
+  [1m[36mComment Load (0.1ms)[0m  [1mSELECT "comments".* FROM "comments" WHERE "comments"."post_id" = $1[0m  [["post_id", 1]]
+  Rendered posts/show.html.erb within layouts/application (2.2ms)
+Completed 200 OK in 4ms (Views: 2.7ms | ActiveRecord: 0.5ms)
+  [1m[35m (0.2ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:35:43.364232"], ["created_at", "2015-03-27 17:35:43.364790"], ["updated_at", "2015-03-27 17:35:43.364790"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/2/comments/new" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by CommentsController#new as HTML
+  Parameters: {"post_id"=>"2"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 2]]
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered comments/_form.html.erb (1.1ms)
+  Rendered comments/new.html.erb within layouts/application (1.3ms)
+Completed 200 OK in 3ms (Views: 1.8ms | ActiveRecord: 0.1ms)
+Started POST "/posts/2/comments" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "comment"=>{"author"=>"", "text"=>""}, "commit"=>"Create Comment", "post_id"=>"2"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 2]]
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered comments/_form.html.erb (1.4ms)
+  Rendered comments/new.html.erb within layouts/application (1.5ms)
+Completed 200 OK in 4ms (Views: 2.1ms | ActiveRecord: 0.3ms)
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (0.8ms)
+Completed 200 OK in 2ms (Views: 2.0ms | ActiveRecord: 0.1ms)
+Started GET "/posts/new" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by PostsController#new as HTML
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (1.6ms)
+  Rendered posts/new.html.erb within layouts/application (2.6ms)
+Completed 200 OK in 4ms (Views: 3.6ms | ActiveRecord: 0.0ms)
+Started POST "/posts" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"Test Title", "entry"=>"Test Entry"}, "commit"=>"Create Post"}
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Test Title"], ["entry", "Test Entry"], ["published", "2015-03-27 17:35:43.393262"], ["created_at", "2015-03-27 17:35:43.393661"], ["updated_at", "2015-03-27 17:35:43.393661"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts
+Completed 302 Found in 2ms (ActiveRecord: 0.3ms)
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (0.6ms)
+Completed 200 OK in 1ms (Views: 1.0ms | ActiveRecord: 0.1ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+Started GET "/posts/new" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by PostsController#new as HTML
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (1.0ms)
+  Rendered posts/new.html.erb within layouts/application (1.1ms)
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.0ms)
+Started POST "/posts" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"", "entry"=>""}, "commit"=>"Create Post"}
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+  Rendered layouts/_errors.html.erb (0.3ms)
+  Rendered posts/_form.html.erb (1.2ms)
+  Rendered posts/new.html.erb within layouts/application (1.3ms)
+Completed 200 OK in 3ms (Views: 1.7ms | ActiveRecord: 0.1ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:35:43.410558"], ["created_at", "2015-03-27 17:35:43.411027"], ["updated_at", "2015-03-27 17:35:43.411027"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/4" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"4"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 4]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 4]]
+  Rendered posts/show.html.erb within layouts/application (1.2ms)
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.3ms)
+Started DELETE "/posts/4" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by PostsController#destroy as HTML
+  Parameters: {"id"=>"4"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 4]]
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mDELETE FROM "posts" WHERE "posts"."id" = $1[0m  [["id", 4]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts
+Completed 302 Found in 1ms (ActiveRecord: 0.3ms)
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.2ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (0.4ms)
+Completed 200 OK in 1ms (Views: 0.8ms | ActiveRecord: 0.2ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:35:43.423122"], ["created_at", "2015-03-27 17:35:43.423492"], ["updated_at", "2015-03-27 17:35:43.423492"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/5" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"5"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 5]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 5]]
+  Rendered posts/show.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.2ms)
+Started GET "/posts/5/edit" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by PostsController#edit as HTML
+  Parameters: {"id"=>"5"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 5]]
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (1.4ms)
+  Rendered posts/edit.html.erb within layouts/application (1.8ms)
+Completed 200 OK in 3ms (Views: 2.9ms | ActiveRecord: 0.1ms)
+Started PATCH "/posts/5" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by PostsController#update as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"Hello world!", "entry"=>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."}, "commit"=>"Update Post", "id"=>"5"}
+  [1m[35mPost Load (0.1ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 5]]
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts/5
+Completed 302 Found in 1ms (ActiveRecord: 0.2ms)
+Started GET "/posts/5" for 127.0.0.1 at 2015-03-27 10:35:43 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"5"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 5]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 5]]
+  Rendered posts/show.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.2ms)
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.0ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:41:34.476533"], ["created_at", "2015-03-27 17:41:34.482571"], ["updated_at", "2015-03-27 17:41:34.482571"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started GET "/posts/6" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"6"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 6]]
+  [1m[36mComment Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1[0m  [["post_id", 6]]
+  Rendered posts/show.html.erb within layouts/application (13.8ms)
+Completed 200 OK in 37ms (Views: 26.0ms | ActiveRecord: 0.9ms)
+Started GET "/posts/6/comments/new" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by CommentsController#new as HTML
+  Parameters: {"post_id"=>"6"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 6]]
+  Rendered layouts/_errors.html.erb (0.3ms)
+  Rendered comments/_form.html.erb (10.3ms)
+  Rendered comments/new.html.erb within layouts/application (12.6ms)
+Completed 200 OK in 20ms (Views: 14.5ms | ActiveRecord: 0.5ms)
+Started POST "/posts/6/comments" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "comment"=>{"author"=>"Person's Name", "text"=>"Comment text."}, "commit"=>"Create Comment", "post_id"=>"6"}
+  [1m[36mPost Load (0.2ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 6]]
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "comments" ("author", "text", "post_id", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["author", "Person's Name"], ["text", "Comment text."], ["post_id", 6], ["published", "2015-03-27 17:41:34.560804"], ["created_at", "2015-03-27 17:41:34.561207"], ["updated_at", "2015-03-27 17:41:34.561207"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts/6
+Completed 302 Found in 3ms (ActiveRecord: 0.5ms)
+Started GET "/posts/6" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"6"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 6]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 6]]
+  [1m[36mComment Load (0.1ms)[0m  [1mSELECT "comments".* FROM "comments" WHERE "comments"."post_id" = $1[0m  [["post_id", 6]]
+  Rendered posts/show.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 3ms (Views: 2.2ms | ActiveRecord: 0.3ms)
+  [1m[35m (0.2ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:41:34.569811"], ["created_at", "2015-03-27 17:41:34.570207"], ["updated_at", "2015-03-27 17:41:34.570207"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/7/comments/new" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by CommentsController#new as HTML
+  Parameters: {"post_id"=>"7"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 7]]
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered comments/_form.html.erb (1.1ms)
+  Rendered comments/new.html.erb within layouts/application (1.2ms)
+Completed 200 OK in 3ms (Views: 1.8ms | ActiveRecord: 0.1ms)
+Started POST "/posts/7/comments" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "comment"=>{"author"=>"", "text"=>""}, "commit"=>"Create Comment", "post_id"=>"7"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 7]]
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered comments/_form.html.erb (1.0ms)
+  Rendered comments/new.html.erb within layouts/application (1.1ms)
+Completed 200 OK in 4ms (Views: 1.6ms | ActiveRecord: 0.3ms)
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (0.7ms)
+Completed 200 OK in 2ms (Views: 1.8ms | ActiveRecord: 0.1ms)
+Started GET "/posts/new" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by PostsController#new as HTML
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (1.4ms)
+  Rendered posts/new.html.erb within layouts/application (2.3ms)
+Completed 200 OK in 4ms (Views: 3.3ms | ActiveRecord: 0.0ms)
+Started POST "/posts" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"Test Title", "entry"=>"Test Entry"}, "commit"=>"Create Post"}
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Test Title"], ["entry", "Test Entry"], ["published", "2015-03-27 17:41:34.595339"], ["created_at", "2015-03-27 17:41:34.595664"], ["updated_at", "2015-03-27 17:41:34.595664"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts
+Completed 302 Found in 2ms (ActiveRecord: 0.3ms)
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.2ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (0.5ms)
+Completed 200 OK in 1ms (Views: 0.9ms | ActiveRecord: 0.2ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+Started GET "/posts/new" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by PostsController#new as HTML
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (1.0ms)
+  Rendered posts/new.html.erb within layouts/application (1.1ms)
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.0ms)
+Started POST "/posts" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"", "entry"=>""}, "commit"=>"Create Post"}
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+  Rendered layouts/_errors.html.erb (0.3ms)
+  Rendered posts/_form.html.erb (1.3ms)
+  Rendered posts/new.html.erb within layouts/application (1.4ms)
+Completed 200 OK in 3ms (Views: 1.9ms | ActiveRecord: 0.1ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:41:34.612079"], ["created_at", "2015-03-27 17:41:34.612400"], ["updated_at", "2015-03-27 17:41:34.612400"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/9" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"9"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 9]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 9]]
+  Rendered posts/show.html.erb within layouts/application (0.9ms)
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.2ms)
+Started DELETE "/posts/9" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by PostsController#destroy as HTML
+  Parameters: {"id"=>"9"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 9]]
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mDELETE FROM "posts" WHERE "posts"."id" = $1[0m  [["id", 9]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts
+Completed 302 Found in 1ms (ActiveRecord: 0.4ms)
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 1ms (Views: 0.7ms | ActiveRecord: 0.1ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:41:34.623791"], ["created_at", "2015-03-27 17:41:34.624147"], ["updated_at", "2015-03-27 17:41:34.624147"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/10" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"10"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 10]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 10]]
+  Rendered posts/show.html.erb within layouts/application (0.9ms)
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.2ms)
+Started GET "/posts/10/edit" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by PostsController#edit as HTML
+  Parameters: {"id"=>"10"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 10]]
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (1.1ms)
+  Rendered posts/edit.html.erb within layouts/application (1.4ms)
+Completed 200 OK in 3ms (Views: 2.5ms | ActiveRecord: 0.1ms)
+Started PATCH "/posts/10" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by PostsController#update as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"Hello world!", "entry"=>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."}, "commit"=>"Update Post", "id"=>"10"}
+  [1m[35mPost Load (0.1ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 10]]
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts/10
+Completed 302 Found in 1ms (ActiveRecord: 0.2ms)
+Started GET "/posts/10" for 127.0.0.1 at 2015-03-27 10:41:34 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"10"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 10]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 10]]
+  Rendered posts/show.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.2ms)
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.0ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:42:18.331330"], ["created_at", "2015-03-27 17:42:18.337711"], ["updated_at", "2015-03-27 17:42:18.337711"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started GET "/posts/11" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"11"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 11]]
+  [1m[36mComment Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1[0m  [["post_id", 11]]
+  Rendered posts/show.html.erb within layouts/application (13.8ms)
+Completed 200 OK in 36ms (Views: 25.8ms | ActiveRecord: 0.9ms)
+Started GET "/posts/11/comments/new" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by CommentsController#new as HTML
+  Parameters: {"post_id"=>"11"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 11]]
+  Rendered layouts/_errors.html.erb (0.2ms)
+  Rendered comments/_form.html.erb (10.0ms)
+  Rendered comments/new.html.erb within layouts/application (12.2ms)
+Completed 200 OK in 20ms (Views: 14.0ms | ActiveRecord: 0.6ms)
+Started POST "/posts/11/comments" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "comment"=>{"author"=>"Person's Name", "text"=>"Comment text."}, "commit"=>"Create Comment", "post_id"=>"11"}
+  [1m[36mPost Load (0.2ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 11]]
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "comments" ("author", "text", "post_id", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["author", "Person's Name"], ["text", "Comment text."], ["post_id", 11], ["published", "2015-03-27 17:42:18.414403"], ["created_at", "2015-03-27 17:42:18.414778"], ["updated_at", "2015-03-27 17:42:18.414778"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts/11
+Completed 302 Found in 3ms (ActiveRecord: 0.5ms)
+Started GET "/posts/11" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"11"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 11]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 11]]
+  [1m[36mComment Load (0.1ms)[0m  [1mSELECT "comments".* FROM "comments" WHERE "comments"."post_id" = $1[0m  [["post_id", 11]]
+  Rendered posts/show.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 3ms (Views: 2.2ms | ActiveRecord: 0.3ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:42:18.423403"], ["created_at", "2015-03-27 17:42:18.423807"], ["updated_at", "2015-03-27 17:42:18.423807"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/12/comments/new" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by CommentsController#new as HTML
+  Parameters: {"post_id"=>"12"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 12]]
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered comments/_form.html.erb (1.1ms)
+  Rendered comments/new.html.erb within layouts/application (1.2ms)
+Completed 200 OK in 3ms (Views: 1.8ms | ActiveRecord: 0.1ms)
+Started POST "/posts/12/comments" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "comment"=>{"author"=>"", "text"=>""}, "commit"=>"Create Comment", "post_id"=>"12"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 12]]
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered comments/_form.html.erb (1.0ms)
+  Rendered comments/new.html.erb within layouts/application (1.1ms)
+Completed 200 OK in 4ms (Views: 1.6ms | ActiveRecord: 0.3ms)
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (0.7ms)
+Completed 200 OK in 2ms (Views: 1.7ms | ActiveRecord: 0.1ms)
+Started GET "/posts/new" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by PostsController#new as HTML
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (1.5ms)
+  Rendered posts/new.html.erb within layouts/application (2.4ms)
+Completed 200 OK in 4ms (Views: 3.4ms | ActiveRecord: 0.0ms)
+Started POST "/posts" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"Test Title", "entry"=>"Test Entry"}, "commit"=>"Create Post"}
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Test Title"], ["entry", "Test Entry"], ["published", "2015-03-27 17:42:18.450352"], ["created_at", "2015-03-27 17:42:18.450695"], ["updated_at", "2015-03-27 17:42:18.450695"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts
+Completed 302 Found in 2ms (ActiveRecord: 0.3ms)
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (0.6ms)
+Completed 200 OK in 1ms (Views: 0.9ms | ActiveRecord: 0.1ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+Started GET "/posts/new" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by PostsController#new as HTML
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (1.2ms)
+  Rendered posts/new.html.erb within layouts/application (1.3ms)
+Completed 200 OK in 2ms (Views: 1.8ms | ActiveRecord: 0.0ms)
+Started POST "/posts" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"", "entry"=>""}, "commit"=>"Create Post"}
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+  Rendered layouts/_errors.html.erb (0.3ms)
+  Rendered posts/_form.html.erb (1.3ms)
+  Rendered posts/new.html.erb within layouts/application (1.3ms)
+Completed 200 OK in 3ms (Views: 1.8ms | ActiveRecord: 0.1ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:42:18.468266"], ["created_at", "2015-03-27 17:42:18.468693"], ["updated_at", "2015-03-27 17:42:18.468693"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/14" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"14"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 14]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 14]]
+  Rendered posts/show.html.erb within layouts/application (0.9ms)
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.2ms)
+Started DELETE "/posts/14" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by PostsController#destroy as HTML
+  Parameters: {"id"=>"14"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 14]]
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mDELETE FROM "posts" WHERE "posts"."id" = $1[0m  [["id", 14]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts
+Completed 302 Found in 1ms (ActiveRecord: 0.3ms)
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 1ms (Views: 0.7ms | ActiveRecord: 0.1ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:42:18.480000"], ["created_at", "2015-03-27 17:42:18.480376"], ["updated_at", "2015-03-27 17:42:18.480376"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/15" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"15"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 15]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 15]]
+  Rendered posts/show.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.2ms)
+Started GET "/posts/15/edit" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by PostsController#edit as HTML
+  Parameters: {"id"=>"15"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 15]]
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (1.2ms)
+  Rendered posts/edit.html.erb within layouts/application (1.6ms)
+Completed 200 OK in 3ms (Views: 2.7ms | ActiveRecord: 0.1ms)
+Started PATCH "/posts/15" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by PostsController#update as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"Hello world!", "entry"=>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."}, "commit"=>"Update Post", "id"=>"15"}
+  [1m[35mPost Load (0.1ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 15]]
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts/15
+Completed 302 Found in 1ms (ActiveRecord: 0.2ms)
+Started GET "/posts/15" for 127.0.0.1 at 2015-03-27 10:42:18 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"15"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 15]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 15]]
+  Rendered posts/show.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.2ms)
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:43:05.941339"], ["created_at", "2015-03-27 17:43:05.947395"], ["updated_at", "2015-03-27 17:43:05.947395"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started GET "/posts/16" for 127.0.0.1 at 2015-03-27 10:43:05 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"16"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 16]]
+  [1m[36mComment Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1[0m  [["post_id", 16]]
+  Rendered posts/show.html.erb within layouts/application (16.8ms)
+Completed 200 OK in 39ms (Views: 28.7ms | ActiveRecord: 0.9ms)
+Started GET "/posts/16/comments/new" for 127.0.0.1 at 2015-03-27 10:43:05 -0700
+Processing by CommentsController#new as HTML
+  Parameters: {"post_id"=>"16"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 16]]
+  Rendered layouts/_errors.html.erb (0.2ms)
+  Rendered comments/_form.html.erb (10.3ms)
+  Rendered comments/new.html.erb within layouts/application (12.5ms)
+Completed 200 OK in 20ms (Views: 14.4ms | ActiveRecord: 0.6ms)
+Started POST "/posts/16/comments" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "comment"=>{"author"=>"Person's Name", "text"=>"Comment text."}, "commit"=>"Create Comment", "post_id"=>"16"}
+  [1m[36mPost Load (0.2ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 16]]
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "comments" ("author", "text", "post_id", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["author", "Person's Name"], ["text", "Comment text."], ["post_id", 16], ["published", "2015-03-27 17:43:06.027477"], ["created_at", "2015-03-27 17:43:06.027849"], ["updated_at", "2015-03-27 17:43:06.027849"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts/16
+Completed 302 Found in 3ms (ActiveRecord: 0.5ms)
+Started GET "/posts/16" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"16"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 16]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 16]]
+  [1m[36mComment Load (0.1ms)[0m  [1mSELECT "comments".* FROM "comments" WHERE "comments"."post_id" = $1[0m  [["post_id", 16]]
+  Rendered posts/show.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 3ms (Views: 2.1ms | ActiveRecord: 0.3ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:43:06.036372"], ["created_at", "2015-03-27 17:43:06.036771"], ["updated_at", "2015-03-27 17:43:06.036771"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/17/comments/new" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by CommentsController#new as HTML
+  Parameters: {"post_id"=>"17"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 17]]
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered comments/_form.html.erb (1.1ms)
+  Rendered comments/new.html.erb within layouts/application (1.2ms)
+Completed 200 OK in 3ms (Views: 1.7ms | ActiveRecord: 0.1ms)
+Started POST "/posts/17/comments" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "comment"=>{"author"=>"", "text"=>""}, "commit"=>"Create Comment", "post_id"=>"17"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 17]]
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered comments/_form.html.erb (1.0ms)
+  Rendered comments/new.html.erb within layouts/application (1.1ms)
+Completed 200 OK in 4ms (Views: 1.6ms | ActiveRecord: 0.3ms)
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.2ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (1.1ms)
+Completed 200 OK in 3ms (Views: 2.7ms | ActiveRecord: 0.2ms)
+Started GET "/posts/new" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by PostsController#new as HTML
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (4.1ms)
+  Rendered posts/new.html.erb within layouts/application (5.3ms)
+Completed 200 OK in 7ms (Views: 6.8ms | ActiveRecord: 0.0ms)
+Started POST "/posts" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"Test Title", "entry"=>"Test Entry"}, "commit"=>"Create Post"}
+  [1m[35m (0.2ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Test Title"], ["entry", "Test Entry"], ["published", "2015-03-27 17:43:06.093433"], ["created_at", "2015-03-27 17:43:06.093977"], ["updated_at", "2015-03-27 17:43:06.093977"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts
+Completed 302 Found in 3ms (ActiveRecord: 0.5ms)
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.2ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (0.7ms)
+Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.2ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+Started GET "/posts/new" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by PostsController#new as HTML
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (1.2ms)
+  Rendered posts/new.html.erb within layouts/application (1.3ms)
+Completed 200 OK in 2ms (Views: 1.9ms | ActiveRecord: 0.0ms)
+Started POST "/posts" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"", "entry"=>""}, "commit"=>"Create Post"}
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+  Rendered layouts/_errors.html.erb (0.4ms)
+  Rendered posts/_form.html.erb (1.6ms)
+  Rendered posts/new.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 4ms (Views: 2.2ms | ActiveRecord: 0.2ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:43:06.115259"], ["created_at", "2015-03-27 17:43:06.115663"], ["updated_at", "2015-03-27 17:43:06.115663"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/19" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"19"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 19]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 19]]
+  Rendered posts/show.html.erb within layouts/application (1.1ms)
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.2ms)
+Started DELETE "/posts/19" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by PostsController#destroy as HTML
+  Parameters: {"id"=>"19"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 19]]
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mDELETE FROM "posts" WHERE "posts"."id" = $1[0m  [["id", 19]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts
+Completed 302 Found in 2ms (ActiveRecord: 0.4ms)
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.4ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (0.6ms)
+Completed 200 OK in 2ms (Views: 0.9ms | ActiveRecord: 0.4ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:43:06.129659"], ["created_at", "2015-03-27 17:43:06.130066"], ["updated_at", "2015-03-27 17:43:06.130066"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/20" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"20"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 20]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 20]]
+  Rendered posts/show.html.erb within layouts/application (1.1ms)
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.2ms)
+Started GET "/posts/20/edit" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by PostsController#edit as HTML
+  Parameters: {"id"=>"20"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 20]]
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (1.5ms)
+  Rendered posts/edit.html.erb within layouts/application (1.9ms)
+Completed 200 OK in 4ms (Views: 3.2ms | ActiveRecord: 0.1ms)
+Started PATCH "/posts/20" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by PostsController#update as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"Hello world!", "entry"=>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."}, "commit"=>"Update Post", "id"=>"20"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 20]]
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts/20
+Completed 302 Found in 2ms (ActiveRecord: 0.4ms)
+Started GET "/posts/20" for 127.0.0.1 at 2015-03-27 10:43:06 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"20"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 20]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 20]]
+  Rendered posts/show.html.erb within layouts/application (1.1ms)
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.3ms)
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:45:16.892317"], ["created_at", "2015-03-27 17:45:16.898722"], ["updated_at", "2015-03-27 17:45:16.898722"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started GET "/posts/21" for 127.0.0.1 at 2015-03-27 10:45:16 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"21"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 21]]
+  [1m[36mComment Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1[0m  [["post_id", 21]]
+  Rendered posts/show.html.erb within layouts/application (17.8ms)
+Completed 200 OK in 41ms (Views: 30.2ms | ActiveRecord: 1.0ms)
+Started GET "/posts/21/comments/new" for 127.0.0.1 at 2015-03-27 10:45:16 -0700
+Processing by CommentsController#new as HTML
+  Parameters: {"post_id"=>"21"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 21]]
+  Rendered layouts/_errors.html.erb (0.3ms)
+  Rendered comments/_form.html.erb (10.3ms)
+  Rendered comments/new.html.erb within layouts/application (12.6ms)
+Completed 200 OK in 20ms (Views: 14.4ms | ActiveRecord: 0.5ms)
+Started POST "/posts/21/comments" for 127.0.0.1 at 2015-03-27 10:45:16 -0700
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "comment"=>{"author"=>"Person's Name", "text"=>"Comment text."}, "commit"=>"Create Comment", "post_id"=>"21"}
+  [1m[36mPost Load (0.2ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 21]]
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "comments" ("author", "text", "post_id", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["author", "Person's Name"], ["text", "Comment text."], ["post_id", 21], ["published", "2015-03-27 17:45:16.980899"], ["created_at", "2015-03-27 17:45:16.981272"], ["updated_at", "2015-03-27 17:45:16.981272"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts/21
+Completed 302 Found in 3ms (ActiveRecord: 0.5ms)
+Started GET "/posts/21" for 127.0.0.1 at 2015-03-27 10:45:16 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"21"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 21]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 21]]
+  [1m[36mComment Load (0.1ms)[0m  [1mSELECT "comments".* FROM "comments" WHERE "comments"."post_id" = $1[0m  [["post_id", 21]]
+  Rendered posts/show.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 3ms (Views: 2.2ms | ActiveRecord: 0.3ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:45:16.989940"], ["created_at", "2015-03-27 17:45:16.990339"], ["updated_at", "2015-03-27 17:45:16.990339"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/22/comments/new" for 127.0.0.1 at 2015-03-27 10:45:16 -0700
+Processing by CommentsController#new as HTML
+  Parameters: {"post_id"=>"22"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 22]]
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered comments/_form.html.erb (1.1ms)
+  Rendered comments/new.html.erb within layouts/application (1.2ms)
+Completed 200 OK in 3ms (Views: 1.8ms | ActiveRecord: 0.1ms)
+Started POST "/posts/22/comments" for 127.0.0.1 at 2015-03-27 10:45:16 -0700
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "comment"=>{"author"=>"", "text"=>""}, "commit"=>"Create Comment", "post_id"=>"22"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 22]]
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+  Rendered layouts/_errors.html.erb (0.3ms)
+  Rendered comments/_form.html.erb (8.7ms)
+  Rendered comments/new.html.erb within layouts/application (8.8ms)
+Completed 200 OK in 12ms (Views: 9.3ms | ActiveRecord: 0.3ms)
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:45:17 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.3ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 4ms (Views: 3.0ms | ActiveRecord: 0.3ms)
+Started GET "/posts/new" for 127.0.0.1 at 2015-03-27 10:45:17 -0700
+Processing by PostsController#new as HTML
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (2.6ms)
+  Rendered posts/new.html.erb within layouts/application (3.6ms)
+Completed 200 OK in 6ms (Views: 5.1ms | ActiveRecord: 0.0ms)
+Started POST "/posts" for 127.0.0.1 at 2015-03-27 10:45:17 -0700
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"Test Title", "entry"=>"Test Entry"}, "commit"=>"Create Post"}
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Test Title"], ["entry", "Test Entry"], ["published", "2015-03-27 17:45:17.037417"], ["created_at", "2015-03-27 17:45:17.037875"], ["updated_at", "2015-03-27 17:45:17.037875"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts
+Completed 302 Found in 2ms (ActiveRecord: 0.4ms)
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:45:17 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.2ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (1.1ms)
+Completed 200 OK in 3ms (Views: 2.2ms | ActiveRecord: 0.2ms)
+  [1m[35m (0.2ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+Started GET "/posts/new" for 127.0.0.1 at 2015-03-27 10:45:17 -0700
+Processing by PostsController#new as HTML
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (1.1ms)
+  Rendered posts/new.html.erb within layouts/application (1.2ms)
+Completed 200 OK in 2ms (Views: 1.8ms | ActiveRecord: 0.0ms)
+Started POST "/posts" for 127.0.0.1 at 2015-03-27 10:45:17 -0700
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"", "entry"=>""}, "commit"=>"Create Post"}
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+  Rendered layouts/_errors.html.erb (0.4ms)
+  Rendered posts/_form.html.erb (1.4ms)
+  Rendered posts/new.html.erb within layouts/application (1.5ms)
+Completed 200 OK in 4ms (Views: 2.0ms | ActiveRecord: 0.2ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:45:17.060204"], ["created_at", "2015-03-27 17:45:17.060612"], ["updated_at", "2015-03-27 17:45:17.060612"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/24" for 127.0.0.1 at 2015-03-27 10:45:17 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"24"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 24]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 24]]
+  Rendered posts/show.html.erb within layouts/application (1.2ms)
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.2ms)
+Started DELETE "/posts/24" for 127.0.0.1 at 2015-03-27 10:45:17 -0700
+Processing by PostsController#destroy as HTML
+  Parameters: {"id"=>"24"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 24]]
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mDELETE FROM "posts" WHERE "posts"."id" = $1[0m  [["id", 24]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts
+Completed 302 Found in 1ms (ActiveRecord: 0.4ms)
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:45:17 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (0.4ms)
+Completed 200 OK in 1ms (Views: 0.7ms | ActiveRecord: 0.1ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:45:17.072776"], ["created_at", "2015-03-27 17:45:17.073174"], ["updated_at", "2015-03-27 17:45:17.073174"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/25" for 127.0.0.1 at 2015-03-27 10:45:17 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"25"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 25]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 25]]
+  Rendered posts/show.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.3ms)
+Started GET "/posts/25/edit" for 127.0.0.1 at 2015-03-27 10:45:17 -0700
+Processing by PostsController#edit as HTML
+  Parameters: {"id"=>"25"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 25]]
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (1.4ms)
+  Rendered posts/edit.html.erb within layouts/application (1.8ms)
+Completed 200 OK in 4ms (Views: 3.0ms | ActiveRecord: 0.1ms)
+Started PATCH "/posts/25" for 127.0.0.1 at 2015-03-27 10:45:17 -0700
+Processing by PostsController#update as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"Hello world!", "entry"=>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."}, "commit"=>"Update Post", "id"=>"25"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 25]]
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts/25
+Completed 302 Found in 2ms (ActiveRecord: 0.4ms)
+Started GET "/posts/25" for 127.0.0.1 at 2015-03-27 10:45:17 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"25"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 25]]
+  [1m[35mComment Exists (0.2ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 25]]
+  Rendered posts/show.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.3ms)
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:47:05.083191"], ["created_at", "2015-03-27 17:47:05.089366"], ["updated_at", "2015-03-27 17:47:05.089366"]]
+  [1m[36m (0.1ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started GET "/posts/26" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"26"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 26]]
+  [1m[36mComment Exists (0.2ms)[0m  [1mSELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1[0m  [["post_id", 26]]
+  Rendered posts/show.html.erb within layouts/application (16.8ms)
+Completed 200 OK in 40ms (Views: 29.2ms | ActiveRecord: 0.9ms)
+Started GET "/posts/26/comments/new" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by CommentsController#new as HTML
+  Parameters: {"post_id"=>"26"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 26]]
+  Rendered layouts/_errors.html.erb (0.3ms)
+  Rendered comments/_form.html.erb (10.3ms)
+  Rendered comments/new.html.erb within layouts/application (12.5ms)
+Completed 200 OK in 20ms (Views: 14.3ms | ActiveRecord: 0.5ms)
+Started POST "/posts/26/comments" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "comment"=>{"author"=>"Person's Name", "text"=>"Comment text."}, "commit"=>"Create Comment", "post_id"=>"26"}
+  [1m[36mPost Load (0.2ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 26]]
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "comments" ("author", "text", "post_id", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["author", "Person's Name"], ["text", "Comment text."], ["post_id", 26], ["published", "2015-03-27 17:47:05.170435"], ["created_at", "2015-03-27 17:47:05.170824"], ["updated_at", "2015-03-27 17:47:05.170824"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts/26
+Completed 302 Found in 3ms (ActiveRecord: 0.5ms)
+Started GET "/posts/26" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"26"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 26]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 26]]
+  [1m[36mComment Load (0.1ms)[0m  [1mSELECT "comments".* FROM "comments" WHERE "comments"."post_id" = $1[0m  [["post_id", 26]]
+  Rendered posts/show.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 3ms (Views: 2.1ms | ActiveRecord: 0.3ms)
+  [1m[35m (0.2ms)[0m  ROLLBACK
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:47:05.179525"], ["created_at", "2015-03-27 17:47:05.179941"], ["updated_at", "2015-03-27 17:47:05.179941"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/27/comments/new" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by CommentsController#new as HTML
+  Parameters: {"post_id"=>"27"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 27]]
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered comments/_form.html.erb (1.1ms)
+  Rendered comments/new.html.erb within layouts/application (1.2ms)
+Completed 200 OK in 3ms (Views: 1.8ms | ActiveRecord: 0.1ms)
+Started POST "/posts/27/comments" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by CommentsController#create as HTML
+  Parameters: {"utf8"=>"✓", "comment"=>{"author"=>"", "text"=>""}, "commit"=>"Create Comment", "post_id"=>"27"}
+  [1m[35mPost Load (0.2ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 27]]
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  ROLLBACK TO SAVEPOINT active_record_1
+  Rendered layouts/_errors.html.erb (0.3ms)
+  Rendered comments/_form.html.erb (1.3ms)
+  Rendered comments/new.html.erb within layouts/application (1.4ms)
+Completed 200 OK in 4ms (Views: 1.8ms | ActiveRecord: 0.3ms)
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (0.8ms)
+Completed 200 OK in 2ms (Views: 1.9ms | ActiveRecord: 0.1ms)
+Started GET "/posts/new" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by PostsController#new as HTML
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (1.5ms)
+  Rendered posts/new.html.erb within layouts/application (2.4ms)
+Completed 200 OK in 4ms (Views: 3.4ms | ActiveRecord: 0.0ms)
+Started POST "/posts" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"Test Title", "entry"=>"Test Entry"}, "commit"=>"Create Post"}
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Test Title"], ["entry", "Test Entry"], ["published", "2015-03-27 17:47:05.215415"], ["created_at", "2015-03-27 17:47:05.215767"], ["updated_at", "2015-03-27 17:47:05.215767"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts
+Completed 302 Found in 2ms (ActiveRecord: 0.3ms)
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (0.6ms)
+Completed 200 OK in 1ms (Views: 1.0ms | ActiveRecord: 0.1ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+Started GET "/posts/new" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by PostsController#new as HTML
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (1.0ms)
+  Rendered posts/new.html.erb within layouts/application (1.1ms)
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.0ms)
+Started POST "/posts" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by PostsController#create as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"", "entry"=>""}, "commit"=>"Create Post"}
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36m (0.1ms)[0m  [1mROLLBACK TO SAVEPOINT active_record_1[0m
+  Rendered layouts/_errors.html.erb (0.4ms)
+  Rendered posts/_form.html.erb (1.4ms)
+  Rendered posts/new.html.erb within layouts/application (1.5ms)
+Completed 200 OK in 4ms (Views: 2.1ms | ActiveRecord: 0.2ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:47:05.233931"], ["created_at", "2015-03-27 17:47:05.234271"], ["updated_at", "2015-03-27 17:47:05.234271"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/29" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"29"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 29]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 29]]
+  Rendered posts/show.html.erb within layouts/application (1.1ms)
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.2ms)
+Started DELETE "/posts/29" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by PostsController#destroy as HTML
+  Parameters: {"id"=>"29"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 29]]
+  [1m[35m (0.1ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mDELETE FROM "posts" WHERE "posts"."id" = $1[0m  [["id", 29]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts
+Completed 302 Found in 2ms (ActiveRecord: 0.3ms)
+Started GET "/posts" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by PostsController#index as HTML
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT "posts".* FROM "posts"[0m
+  Rendered posts/index.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 1ms (Views: 0.7ms | ActiveRecord: 0.1ms)
+  [1m[35m (0.1ms)[0m  ROLLBACK
+  [1m[36m (0.0ms)[0m  [1mBEGIN[0m
+  [1m[35m (0.0ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "posts" ("title", "entry", "published", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["title", "Hello world!"], ["entry", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."], ["published", "2015-03-27 17:47:05.247255"], ["created_at", "2015-03-27 17:47:05.247662"], ["updated_at", "2015-03-27 17:47:05.247662"]]
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Started GET "/posts/30" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"30"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 30]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 30]]
+  Rendered posts/show.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.2ms)
+Started GET "/posts/30/edit" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by PostsController#edit as HTML
+  Parameters: {"id"=>"30"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 30]]
+  Rendered layouts/_errors.html.erb (0.0ms)
+  Rendered posts/_form.html.erb (1.1ms)
+  Rendered posts/edit.html.erb within layouts/application (1.5ms)
+Completed 200 OK in 3ms (Views: 2.5ms | ActiveRecord: 0.1ms)
+Started PATCH "/posts/30" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by PostsController#update as HTML
+  Parameters: {"utf8"=>"✓", "post"=>{"title"=>"Hello world!", "entry"=>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mattis eros nec velit condimentum condimentum."}, "commit"=>"Update Post", "id"=>"30"}
+  [1m[35mPost Load (0.1ms)[0m  SELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1  [["id", 30]]
+  [1m[36m (0.1ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35m (0.1ms)[0m  RELEASE SAVEPOINT active_record_1
+Redirected to http://www.example.com/posts/30
+Completed 302 Found in 2ms (ActiveRecord: 0.2ms)
+Started GET "/posts/30" for 127.0.0.1 at 2015-03-27 10:47:05 -0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"30"}
+  [1m[36mPost Load (0.1ms)[0m  [1mSELECT  "posts".* FROM "posts" WHERE "posts"."id" = $1 LIMIT 1[0m  [["id", 30]]
+  [1m[35mComment Exists (0.1ms)[0m  SELECT  1 AS one FROM "comments" WHERE "comments"."post_id" = $1 LIMIT 1  [["post_id", 30]]
+  Rendered posts/show.html.erb within layouts/application (1.1ms)
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.2ms)
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.0ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  BEGIN
+  [1m[36m (0.0ms)[0m  [1mROLLBACK[0m
