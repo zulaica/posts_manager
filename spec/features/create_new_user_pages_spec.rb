@@ -8,13 +8,13 @@ describe "the create new user process" do
     fill_in "Email", :with => "username@domain.tld"
     fill_in "Password", :with => "password1234"
     fill_in "Password confirmation", :with => "password1234"
-    click_on "Create Account"
+    click_on "Submit"
     expect(page).to have_content "username"
   end
 
   it "throws an error when the form isn't filled out" do
     visit new_user_path
-    click_on "Create Account"
+    click_on "Submit"
     expect(page).to have_content "errors"
   end
 end
