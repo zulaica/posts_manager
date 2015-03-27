@@ -1,51 +1,59 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>BloggingApp</title>
-  <link href="//fonts.googleapis.com/css?family=Oswald:400,700|Lato:900" rel="stylesheet" />
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+  <head>
+    <title>Posts Manager</title>
+    <link href="//fonts.googleapis.com/css?family=Oswald:400,700|Lato:900" rel="stylesheet" />
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <header class="jumbotron">
+      <h1 class="container">Super Secret Diarytron 9000<sup>&reg;</sup></h1>
+    </header>
 
-  <header class="jumbotron">
-    <h1 class="container">Super Secret Diarytron 9000<sup>&reg;</sup></h1>
-  </header>
+    <nav role="navigation" class="container well well-sm">
+      <ul class="nav nav-pills nav-justified">
+        <li role="presentation">
+          <%= link_to posts_path do %>
+            <span class="glyphicon glyphicon-list"></span> List all blog posts
+          <% end %>
+        </li>
+        <li role="presentation">
+          <%= link_to new_post_path do %>
+            <span class="glyphicon glyphicon-plus"></span> Create a new blog post
+          <% end %>
+        </li>
+      </ul>
+    </nav>
 
-  <nav role="navigation" class="container well well-sm">
-    <ul class="nav nav-pills nav-justified">
-      <li role="presentation">
-        <%= link_to posts_path do %>
-          <span class="glyphicon glyphicon-list"></span> List all blog posts
-        <% end %>
-      </li>
-      <li role="presentation">
-        <%= link_to new_post_path do %>
-          <span class="glyphicon glyphicon-plus"></span> Create a new blog post
-        <% end %>
-      </li>
-    </ul>
-  </nav>
-
-  <section class="container">
-    <% flash.each do |name, msg| %>
-      <% if msg.is_a?(String) %>
-        <div data-alert class="alert alert-<%= name.to_s == 'notice' ? 'success' : 'danger' %>" role="alert"><%= msg %></div>
+    <ul class="nav navbar-nav">
+      <% if current_user %>
+      <li><%= link_to "Account", user_path(current_user) %></li>
+      <li><%= link_to "Log Out", log_out_path %></li>
+      <% else %>
+      <li><%= link_to "Sign up", new_user_path %></li>
+      <li><%= link_to "Log In", log_in_path %></li>
       <% end %>
-    <% end %>
-  </section>
+    </ul>
 
-  <main class="container">
-    <%= yield %>
-  </main>
+    <section class="container">
+      <% flash.each do |name, msg| %>
+        <% if msg.is_a?(String) %>
+          <div data-alert class="alert alert-<%= name.to_s == 'notice' ? 'success' : 'danger' %>" role="alert"><%= msg %></div>
+        <% end %>
+      <% end %>
+    </section>
 
-  <footer>
-    <div class="container">
-      <p class="col-md-3 col-md-offset-3"><a href="//zulaica.info" target="_blank">▶︎▲▼⬆︎▶︎</a> made this.</p>
-      <p class="col-md-3">Source available on <a href="//github.com/zulaica/rails_blog_app" target="_blank">GitHub</a>.</p>
-    </div>
-  </footer>
+    <main class="container">
+      <%= yield %>
+    </main>
 
-</body>
+    <footer>
+      <div class="container">
+        <p class="col-md-3 col-md-offset-3"><a href="//zulaica.info" target="_blank">▶︎▲▼⬆︎▶︎</a> made this.</p>
+        <p class="col-md-3">Source available on <a href="//github.com/zulaica/rails_blog_app" target="_blank">GitHub</a>.</p>
+      </div>
+    </footer>
+  </body>
 </html>

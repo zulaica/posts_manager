@@ -8,6 +8,7 @@ gem 'uglifier'
 gem 'coffee-rails'
 gem 'jquery-rails'
 gem 'turbolinks'
+gem 'bcrypt-ruby', require: 'bcrypt'
 
 group :development do
   gem 'byebug'
@@ -20,9 +21,14 @@ group :test, :development do
   gem 'rspec-rails'
   gem 'pry'
   gem 'launchy'
+  gem 'factory_girl_rails'
 end
 
 group :test do
   gem 'shoulda-matchers'
   gem 'capybara'
+end
+
+group :production do
+  gem 'rails_12factor'
 end
