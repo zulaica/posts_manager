@@ -8,9 +8,10 @@ class CommentsController < ApplicationController
     @post = Post.find(params[:post_id])
     @comment = @post.comments.new(comment_params)
     @comment.published = Time.now
+    @comment.user_id = current_user.id
     if @comment.save
-      flash[:notice] = "Your comment has been successfully added, " + @comment.author
-      redirect_to post_path(@comment.post)
+      flash[:notice] = "Your comment has been successfully added!"# + User.find(@comment.user_id).username
+      redirect_to post_path(@post)
     else
       render :new
     end
@@ -18,6 +19,6 @@ class CommentsController < ApplicationController
 
 private
   def comment_params
-    params.require(:comment).permit(:author, :text)
+    params.require(:comment).permit(:text)
   end
 end

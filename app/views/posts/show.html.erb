@@ -13,7 +13,7 @@
     <% if @post.comments.any? %>
       <dl>
         <% @post.comments.each do |comment| %>
-        <dt><%= comment.author %></dt>
+        <dt><%= User.find(comment.user_id).username %></dt>
         <dd><%= comment.text %></dd>
         <dd><time datetime="<%= comment.published.strftime('%Y-%m-%dT%H:%M%z') %>"><%= comment.published.strftime("Published on %B %d, %Y at %I:%M%P \(%Z\)") %></time></dd>
         <% end %>

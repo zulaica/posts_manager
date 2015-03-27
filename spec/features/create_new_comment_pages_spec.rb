@@ -11,7 +11,6 @@ describe "the create new comment process" do
     click_on "Submit"
     visit post_path(post)
     click_on "Add a comment"
-    fill_in "Author", :with => "Person's Name"
     fill_in "Text", :with => "Comment text."
     click_on "Create Comment"
     expect(page).to have_content "added"
