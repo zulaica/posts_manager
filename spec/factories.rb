@@ -4,14 +4,13 @@ FactoryGirl.define do
     sequence(:email) { |n| "user#{n}@domain.tld" }
     password "password1234"
     password_confirmation "password1234"
-    id 1
   end
 
   factory :post do
     title 'The Post Title'
     entry 'This is the post body.'
     published Time.now
-    user_id 1
+    user
   end
 
   factory :comment do
