@@ -4,5 +4,5 @@ class Comment < ActiveRecord::Base
 
   validates :text, :presence => true
 
-  default_scope {order('published DESC')}
+  default_scope { order('published DESC') }
 end

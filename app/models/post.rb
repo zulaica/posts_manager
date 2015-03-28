@@ -5,5 +5,5 @@ class Post < ActiveRecord::Base
   validates :title, :presence => true
   validates :entry, :presence => true
 
-  default_scope {order('published DESC')}
+  default_scope { order('published DESC') }
 end

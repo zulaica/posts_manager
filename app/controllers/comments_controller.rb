@@ -8,9 +8,9 @@ class CommentsController < ApplicationController
     @post = Post.find(params[:post_id])
     @comment = @post.comments.new(comment_params)
     @comment.published = Time.now
-    @comment.user_id = current_user.id
+    @comment.user = current_user
     if @comment.save
-      flash[:notice] = "Your comment has been successfully added!"# + User.find(@comment.user_id).username
+      flash[:notice] = "Your comment has been successfully added, " + current_user.username + "!"
       redirect_to post_path(@post)
     else
       render :new
