@@ -1,10 +1,7 @@
-<section class="col-md-12">
-  <h1>Posts</h1>
+<section>
+  <h1>All Posts</h1>
 
   <dl>
-    <% @posts.each do |post| %>
-      <dt><%= link_to post.title, post_path(post) %></dt>
-      <dd>Published by <%= post.user.username %> on <time datetime="<%= post.published.strftime('%Y-%m-%dT%H:%M%z') %>"><%= post.published.strftime("%B %d, %Y at %I:%M%P \(%Z\)") %></time></dd>
-    <% end %>
+    <%= render @posts %>
   </dl>
 </section>

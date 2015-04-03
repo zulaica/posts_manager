@@ -10,18 +10,10 @@
 
   <section>
     <h2>Comments</h2>
-    <% if @post.comments.any? %>
-      <dl>
-        <% @post.comments.each do |comment| %>
-        <dt><%= comment.user.username %></dt>
-        <dd><%= comment.text %></dd>
-        <dd><time datetime="<%= comment.published.strftime('%Y-%m-%dT%H:%M%z') %>"><%= comment.published.strftime("Published on %B %d, %Y at %I:%M%P \(%Z\)") %></time></dd>
-        <% end %>
-      </dl>
-      <% else %>
-        <p>There are no comments yet!</p>
-      <% end %>
-      <%= link_to "Add a comment", new_post_comment_path(@post) %>
+    <dl id="comments">
+      <%= render(@post.comments) || "There are no comments yet!" %>
+    </dl>
+    <p><%= link_to "Add a comment", new_post_comment_path(@post), id: "new_comment_link", remote: true %></p>
   </section>
 </article>
 
