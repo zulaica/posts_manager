@@ -4,6 +4,10 @@ describe "the delete post process" do
   let (:user) { FactoryGirl.create(:user) }
   let (:post) { FactoryGirl.create(:post, user: user) }
 
+  before do
+    login(user)
+  end
+
   it "deletes the post" do
     visit post_path(post)
     click_on "Delete this post"
