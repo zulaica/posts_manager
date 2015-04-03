@@ -4,6 +4,8 @@ gem 'rails'
 gem 'pg'
 gem 'sass-rails'
 gem 'bootstrap-sass'
+gem 'bootstrap_form'
+gem 'bootswatch-rails'
 gem 'uglifier'
 gem 'coffee-rails'
 gem 'jquery-rails'
@@ -27,6 +29,8 @@ end
 group :test do
   gem 'shoulda-matchers'
   gem 'capybara'
+  gem 'poltergeist'
+  gem 'database_cleaner'
 end
 
 group :production do
