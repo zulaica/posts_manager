@@ -3,7 +3,7 @@ require "rails_helper"
 describe "the create new user process" do
   it "creates a new user" do
     visit root_path
-    click_on "Sign up"
+    click_on "Sign Up"
     fill_in "Username", :with => "username"
     fill_in "Email", :with => "username@domain.tld"
     fill_in "Password", :with => "password1234"

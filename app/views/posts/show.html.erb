@@ -13,7 +13,11 @@
     <dl id="comments">
       <%= render(@post.comments) || "There are no comments yet!" %>
     </dl>
-    <p><%= link_to "Add a comment", new_post_comment_path(@post), id: "new_comment_link", remote: true %></p>
+    <% if current_user %>
+      <p><%= link_to "Add a comment", new_post_comment_path(@post), id: "new_comment_link", remote: true %></p>
+    <% else %>
+      <p>You must have an account to post a comment. <%= link_to "Sign Up", new_user_path %> | <%= link_to "Log In", log_in_path %>
+    <% end %>
   </section>
 </article>
 
