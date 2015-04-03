@@ -2,13 +2,13 @@ require "rails_helper"
 
 describe "the edit post process" do
   let (:user) { FactoryGirl.create(:user) }
-  let (:post) { FactoryGirl.create(:post) }
+  let (:post) { FactoryGirl.create(:post, user: user) }
+
+  before do
+    login(user)
+  end
 
   it "edits the post" do
-    visit log_in_path
-    fill_in "Email", :with => user.email
-    fill_in "Password", :with => user.password
-    click_on "Submit"
     visit post_path(post)
     click_on "Edit this post"
     click_on "Update Post"
