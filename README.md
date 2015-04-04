@@ -6,8 +6,8 @@ Posts Manager is a simple web application that allows a user to manage post entr
 ## Requirements
 The SMS notification feature is powered by [Twilio](https://www.twilio.com/). You will need to set up your own account with Twilio and set up your credentials in an `.env` file in the following format:
 ```
-TWILLIO_ACCOUNT_SID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-TWILLIO_AUTH_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_ACCOUNT_SID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_AUTH_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 FROM_PHONE_NUMBER=5555555555
 TO_PHONE_NUMBER=5555555555
 ```
@@ -32,7 +32,8 @@ $ rails server
 ```
 
 ## To Do
-- Figure out why Twilio isn't authorizing the supplied credentials—at least for me. YMMV.
+- ~~Figure out why Twilio isn't authorizing the supplied credentials—at least for me. YMMV.~~ The difference between "TWILIO" and "TWILLIO". That broke my credentials. Gonna headdesk for a few hours and finish this later.
+- Finish SMS comment notification.
 - Finish commenting system.
 - Create user types.
 - Add more AJAX.
