@@ -1,28 +1,26 @@
 <article class="col-md-8">
   <header>
-    <h1>Welcome, <%= @user.username %>!</h1>
+    <h1>Your Posts</h1>
   </header>
 
   <section>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Your posts</h3>
-      </div>
-      <div class="panel-body">
-        <dl>
-          <% @user.posts.each do |p|  %>
-          <dt><%= link_to p.title, post_path(p) %></dt>
-          <dd><time datetime="<%= p.published.strftime('%Y-%m-%dT%H:%M%z') %>"><%= p.published.strftime("Published on %B %d, %Y at %I:%M%P \(%Z\)") %></time></dd>
-          <% end %>
-        </dl>
-      </div>
-    </div>
+    <dl>
+      <%= render(@user.posts) || "You don't have any posts yet!" %>
+    </dl>
   </section>
 </article>
 
 <aside class="col-md-4">
-  <h1>Manage your account</h1>
-  <ul class="list-unstyled">
-    <li><%= link_to "Edit your account information", edit_user_path, :class => "btn btn-default" %></li>
-  </ul>
+  <%# if @user.avatar_file_name %>
+    <%#= image_tag @user.avatar.url(:thumb) %>
+  <%# end %>
+  <dl>
+    <dt>Username</dt>
+    <dd><%= @user.username %></dd>
+    <dt>Email</dt>
+    <dd><%= @user.email %></dd>
+    <dt>Phone</dt>
+    <dd><%= @user.phone %></dd>
+  </dl>
+  <p><%= link_to "Edit your account", edit_user_path, :class => "btn btn-default" %></p>
 </aside>

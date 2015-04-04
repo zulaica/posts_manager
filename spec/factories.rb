@@ -2,6 +2,7 @@ FactoryGirl.define do
   factory :user do
     username "username"
     email "username@domain.tld"
+    phone ENV['TO_PHONE_NUMBER']
     password "password1234"
     password_confirmation "password1234"
   end

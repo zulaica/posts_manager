@@ -9,7 +9,7 @@ describe "the edit existing user process" do
 
   it "edits an existing user" do
     visit user_path(user)
-    click_on "Edit your account information"
+    click_on "Edit your account"
     click_on "Submit"
     expect(page).to have_content "updated"
   end

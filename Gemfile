@@ -11,6 +11,7 @@ gem 'coffee-rails'
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'bcrypt-ruby', require: 'bcrypt'
+gem 'rest-client'
 
 group :development do
   gem 'byebug'
@@ -21,6 +22,7 @@ end
 
 group :test, :development do
   gem 'rspec-rails'
+  gem 'dotenv-rails'
   gem 'pry'
   gem 'factory_girl_rails'
 end
@@ -31,6 +33,8 @@ group :test do
   gem 'launchy'
   gem 'poltergeist'
   gem 'database_cleaner'
+  # gem 'vcr'
+  # gem 'webmock'
 end
 
 group :production do
