@@ -10,3 +10,13 @@ script:
   - bundle exec rake db:migrate
   - bundle exec rake db:test:prepare
   - bundle exec rspec
+deploy:
+  provider: heroku
+  api_key:
+    secure: laTNVTSVz9OA4y+vDso+OwAfiE6NYMzBppzpby+mLaEx4YQvGE7MTG9mFC9JLJMO0ZSMdQ2oFAnNjAKmXm3GkUWvCh1+bBfDutb3SHV1RCOcG9vS7tCQ3uYWrNKXfUpdzpHA0XnuX+MXcwJf4IAFSXnL1tdvgcGPddfxMZfU+es=
+  app: postsmanager
+  run:
+    - "rake db:migrate"
+    # - restart
+  on:
+    repo: zulaica/posts_manager
