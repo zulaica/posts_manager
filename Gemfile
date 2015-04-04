@@ -33,8 +33,8 @@ group :test do
   gem 'launchy'
   gem 'poltergeist'
   gem 'database_cleaner'
-  # gem 'vcr'
-  # gem 'webmock'
+  gem 'vcr'
+  gem 'webmock'
 end
 
 group :production do
