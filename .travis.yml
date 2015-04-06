@@ -10,6 +10,8 @@ script:
   - bundle exec rake db:migrate
   - bundle exec rake db:test:prepare
   - bundle exec rspec
+
+# Settings for automatically deploying to Heroku on a successful build.
 deploy:
   provider: heroku
   api_key:
@@ -17,6 +19,6 @@ deploy:
   app: postsmanager
   run:
     - "rake db:migrate"
-    # - restart
+    - restart
   on:
     repo: zulaica/posts_manager
