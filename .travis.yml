@@ -19,6 +19,6 @@ deploy:
   app: postsmanager
   run:
     - "rake db:migrate"
-    - restart
+    # - restart
   on:
     repo: zulaica/posts_manager
